@@ -17,16 +17,25 @@ const server = serve({
         // Handle different file locations
         let fsPath;
         if (filePath.startsWith('/src/')) {
-            // Serve files from src directory
+            // Serve files from src directory (development)
             fsPath = filePath.slice(1); // Remove leading slash
+        } else if (filePath === '/main.js') {
+            // Handle the built main.js file - try dist first, then build on-the-fly
+            const distFile = Bun.file('./dist/main.js');
+            if (await distFile.exists()) {
+                fsPath = './dist/main.js';
+            } else {
+                // Build on-the-fly for development
+                fsPath = './src/main.ts';
+            }
         } else {
             // Serve files from public directory
             fsPath = `public${filePath}`;
         }
 
         try {
-            // Handle TypeScript files
-            if (fsPath.endsWith('.ts')) {
+            // Handle TypeScript files and main.js
+            if (fsPath.endsWith('.ts') || (filePath === '/main.js' && fsPath.endsWith('.ts'))) {
                 const file = Bun.file(fsPath);
                 if (!await file.exists()) {
                     return new Response("File not found", { status: 404 });

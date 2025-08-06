@@ -52,7 +52,7 @@ KittenTTS-Browser/
 - [Bun](https://bun.sh/) (v1.0.0 or higher)
 - Modern browser with WebAssembly support
 
-### Installation
+### Local Development
 
 1. **Clone the repository**:
 
@@ -81,6 +81,108 @@ KittenTTS-Browser/
 
 5. **Wait for initialization** (model loading takes ~30 seconds for the first time)
 
+### Cloudflare Pages Deployment
+
+The application is configured for easy deployment to Cloudflare Pages, providing global CDN distribution for static site hosting.
+
+#### Prerequisites for Cloudflare Pages
+
+1. **Install Wrangler CLI**:
+
+   ```bash
+   bun add -g wrangler
+   ```
+
+2. **Login to Cloudflare**:
+
+   ```bash
+   wrangler login
+   ```
+
+#### Deployment Steps
+
+1. **Build and deploy in one command**:
+
+   ```bash
+   bun run deploy
+   ```
+
+2. **Or build separately**:
+
+   ```bash
+   bun run build:cf
+   wrangler pages deploy dist
+   ```
+
+#### Configuration
+
+The deployment is configured via `wrangler.toml`:
+
+```toml
+name = "kitten-tts-browser"
+compatibility_date = "2024-01-01"
+
+[pages]
+name = "kitten-tts-browser"
+bucket = "./dist"
+```
+
+#### CORS and Headers Configuration
+
+The `_headers` file in the dist directory configures proper headers for WebAssembly support:
+
+```
+/*
+  Cross-Origin-Embedder-Policy: require-corp
+  Cross-Origin-Opener-Policy: same-origin
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, POST, OPTIONS
+  Access-Control-Allow-Headers: Content-Type
+
+/*.wasm
+  Content-Type: application/wasm
+
+/*.onnx
+  Content-Type: application/octet-stream
+
+/*.npz
+  Content-Type: application/octet-stream
+
+/*.js
+  Content-Type: application/javascript; charset=utf-8
+
+/*.html
+  Content-Type: text/html; charset=utf-8
+```
+
+#### Build Output
+
+The build process creates a `dist/` directory containing:
+
+```
+dist/
+├── index.html              # Main HTML file
+├── main.js                 # Compiled main application (232KB)
+├── worker.js               # Compiled Web Worker (2.2KB)
+├── main.js.map            # Source maps for debugging
+├── worker.js.map          # Worker source maps
+├── ort.min.js             # ONNX Runtime library (528KB)
+├── kitten_tts_nano_v0_1.onnx  # TTS model (23MB)
+├── voices.npz             # Voice embeddings (10KB)
+├── ort-wasm*.wasm         # WebAssembly files (~40MB total)
+└── _headers               # Cloudflare Pages headers configuration
+```
+
+#### Benefits of Cloudflare Pages Deployment
+
+- **Global CDN**: Content served from 200+ edge locations worldwide
+- **Automatic Scaling**: Handles traffic spikes automatically
+- **Security**: Built-in DDoS protection and SSL/TLS
+- **Performance**: Sub-100ms response times globally
+- **Cost-Effective**: Free tier available for personal projects
+- **Git Integration**: Automatic deployments from Git repositories
+- **WebAssembly Support**: Proper headers for WASM execution
+
 ## 🎯 Usage
 
 1. **Enter text** in the text area
@@ -102,6 +204,18 @@ bun run start
 
 # Build TypeScript files
 bun run build
+
+# Build for Cloudflare Workers
+bun run build:cf
+
+# Deploy to Cloudflare Workers
+bun run deploy
+
+# Deploy to staging environment
+bun run deploy:staging
+
+# Deploy to production environment
+bun run deploy:prod
 
 # Run tests
 bun test

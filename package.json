@@ -9,6 +9,8 @@
     "serve": "python server.py",
     "build": "bun run build.ts",
     "build:watch": "bun --watch build.ts",
+    "build:cf": "bun run build-cf.ts",
+    "deploy": "bun run build-cf.ts && wrangler pages deploy dist",
     "test": "bun test"
   },
   "dependencies": {
@@ -20,7 +22,8 @@
     "typescript": "5.9.2"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0"
+    "@types/node": "^20.0.0",
+    "wrangler": "^4.28.0"
   },
   "module": "index.ts",
   "type": "module",

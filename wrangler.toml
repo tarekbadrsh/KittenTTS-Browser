@@ -1,0 +1,7 @@
+name = "kitten-tts-browser"
+compatibility_date = "2024-01-01"
+
+[pages]
+name = "kitten-tts-browser"
+bucket = "./dist"
+
