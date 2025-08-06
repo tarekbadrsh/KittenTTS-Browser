@@ -1,0 +1,37 @@
+{
+  "name": "katt-bun",
+  "version": "1.0.0",
+  "description": "Kitten TTS Nano - Bun/TypeScript version",
+  "main": "index.ts",
+  "scripts": {
+    "start": "bun run server.ts",
+    "dev": "bun --watch server.ts",
+    "serve": "python server.py",
+    "build": "bun run build.ts",
+    "build:watch": "bun --watch build.ts",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@types/bun": "1.2.19",
+    "@types/jszip": "^3.4.1",
+    "espeak-ng": "^1.0.2",
+    "jszip": "^3.10.1",
+    "phonemizer": "^1.2.1",
+    "typescript": "5.9.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0"
+  },
+  "module": "index.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.ts"
+    }
+  },
+  "targets": {
+    "bun": {
+      "main": "./index.ts"
+    }
+  }
+}
