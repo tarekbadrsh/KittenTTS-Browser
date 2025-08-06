@@ -3,6 +3,12 @@
 A high-quality text-to-speech model running entirely in your browser using WebAssembly and ONNX Runtime. Built with TypeScript and Bun for modern development experience.
 
 ![Kitten TTS Demo](https://img.shields.io/badge/Status-Ready-brightgreen)
+
+## 🌐 Live Demo
+
+**Try it now**: [https://kitten-tts-browser.pages.dev/](https://kitten-tts-browser.pages.dev/)
+
+The application is deployed on Cloudflare Pages with global CDN distribution for optimal performance worldwide.
 ![TypeScript](https://img.shields.io/badge/TypeScript-100%25-blue)
 ![Bun](https://img.shields.io/badge/Runtime-Bun-orange)
 ![License](https://img.shields.io/badge/License-Apache%202.0-blue)
