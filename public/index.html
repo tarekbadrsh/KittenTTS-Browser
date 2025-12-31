@@ -175,6 +175,80 @@
             margin-top: 5px;
         }
 
+        /* Model options sections */
+        .model-options {
+            background: #f0f4f8;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .model-options .form-group {
+            margin-bottom: 0;
+        }
+
+        /* Download progress */
+        .download-progress {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 12px;
+            border-left: 4px solid #48bb78;
+        }
+
+        .progress-container {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        #progressText {
+            font-size: 0.9rem;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        /* Range input styling */
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -195,13 +269,53 @@
 
 <body>
     <div class="container">
-        <h1>🎤 Kitten TTS Nano</h1>
+        <h1>🎤 Multi-Model TTS</h1>
         <p class="subtitle">High-quality text-to-speech running locally in your browser</p>
 
         <div class="form-group">
             <label for="textInput">Text to Synthesize:</label>
             <textarea id="textInput" rows="5"
                 placeholder="Enter the text you want to convert to speech...">This high quality TTS model works without a GPU, directly in the browser!</textarea>
+        </div>
+
+        <!-- Model Selection -->
+        <div class="form-group">
+            <label for="modelSelect">Model:</label>
+            <select id="modelSelect">
+                <option value="kitten">KittenTTS Nano (24MB) - Fast</option>
+                <option value="kokoro">Kokoro-82M (92MB) - High Quality</option>
+                <option value="supertonic">Supertonic TTS (263MB) - Premium</option>
+            </select>
+        </div>
+
+        <!-- Kokoro-specific options -->
+        <div id="kokoroOptions" class="model-options" style="display: none;">
+            <div class="form-group">
+                <label for="quantizationSelect">Model Quality:</label>
+                <select id="quantizationSelect">
+                    <option value="q8">Standard (92MB) - Recommended</option>
+                    <option value="q4">Fast (154MB)</option>
+                    <option value="fp16">High Quality (163MB)</option>
+                    <option value="fp32">Maximum Quality (326MB)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Supertonic-specific options -->
+        <div id="supertonicOptions" class="model-options" style="display: none;">
+            <div class="form-group">
+                <label for="inferenceSteps">Inference Steps: <span id="inferenceStepsValue">5</span></label>
+                <input type="range" id="inferenceSteps" min="1" max="50" value="5">
+                <div class="speed-info">More steps = higher quality, slower generation</div>
+            </div>
+        </div>
+
+        <!-- Download Progress -->
+        <div id="downloadProgress" class="download-progress" style="display: none;">
+            <div class="progress-container">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+            <span id="progressText">Downloading model...</span>
         </div>
 
         <div class="controls-row">

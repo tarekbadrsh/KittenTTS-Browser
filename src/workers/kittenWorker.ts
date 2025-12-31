@@ -1,4 +1,6 @@
-// Import ONNX Runtime Web
+// KittenTTS Nano ONNX Worker
+// Handles model loading and inference in a separate thread
+
 declare function importScripts(...urls: string[]): void;
 importScripts('/ort.min.js');
 
@@ -169,5 +171,5 @@ self.onmessage = (e: MessageEvent<WorkerMessage>) => {
 };
 
 // Start loading the model
-console.log('Worker initialized - attempting to load model...');
+console.log('KittenTTS Worker initialized - loading model...');
 loadModel();

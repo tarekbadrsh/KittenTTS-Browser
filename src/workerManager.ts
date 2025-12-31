@@ -15,7 +15,9 @@ export class WorkerManager {
 
         this.domElements.statusElement.textContent = 'Initializing worker and loading model (~24MB)...';
         // Use the built worker file in production, or the source file in development
-        const workerPath = window.location.hostname === 'localhost' ? '/src/worker.ts' : '/worker.js';
+        const workerPath = window.location.hostname === 'localhost'
+            ? '/src/workers/kittenWorker.ts'
+            : '/workers/kittenWorker.js';
         this.worker = new Worker(workerPath);
         this.worker.onmessage = this.handleWorkerMessage.bind(this);
         this.worker.onerror = (error) => {

@@ -3,14 +3,30 @@ import { mkdir, cp } from "fs/promises";
 
 console.log("🔨 Building for Cloudflare Workers...");
 
-// Create dist directory
+// Create dist directories
 await mkdir("./dist", { recursive: true });
+await mkdir("./dist/workers", { recursive: true });
 
 // Build the main TypeScript file
-console.log("📦 Building TypeScript files...");
+console.log("📦 Building main TypeScript file...");
 await build({
-  entrypoints: ["./src/main.ts", "./src/worker.ts"],
+  entrypoints: ["./src/main.ts"],
   outdir: "./dist",
+  target: "browser",
+  format: "esm",
+  minify: true,
+  sourcemap: "external",
+});
+
+// Build workers separately to maintain directory structure
+console.log("📦 Building worker files...");
+await build({
+  entrypoints: [
+    "./src/workers/kittenWorker.ts",
+    "./src/workers/kokoroWorker.ts",
+    "./src/workers/supertonicWorker.ts",
+  ],
+  outdir: "./dist/workers",
   target: "browser",
   format: "esm",
   minify: true,

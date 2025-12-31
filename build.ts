@@ -4,7 +4,7 @@ console.log("🔨 Building TypeScript files...");
 
 // Build the main TypeScript file
 await build({
-    entrypoints: ["./public/main.ts"],
+    entrypoints: ["./src/main.ts"],
     outdir: "./public",
     target: "browser",
     format: "esm",
